@@ -17,3 +17,10 @@ type Item struct {
 	Amount   float64   // сумма
 	Date     time.Time // дата в формате YYYY-MM-DD
 }
+
+// CategoryAgregation — структура для результата группировки по категориям
+type CategoryAgregation struct {
+	Category string  // категория
+	Sum      float64 // сумма по категории
+	Count    int     // количество по категории
+}

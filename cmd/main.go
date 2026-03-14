@@ -8,6 +8,7 @@ import (
 	"syscall"
 
 	"github.com/IPampurin/SalesTracker/pkg/configuration"
+	"github.com/IPampurin/SalesTracker/pkg/db"
 	"github.com/IPampurin/SalesTracker/pkg/server"
 	"github.com/wb-go/wbf/logger"
 )
@@ -39,15 +40,14 @@ func main() {
 	}
 
 	// defer func() { _ = appLogger.(*logger.ZapAdapter) }()
-	/*
-		// получаем экземпляр БД
-		storageDB, err := db.InitDB(ctx, &cfg.DB, appLogger)
-		if err != nil {
-			appLogger.Error("ошибка подключения к БД", "error", err)
-			return
-		}
-		defer func() { _ = db.CloseDB(storageDB) }()
-	*/
+
+	// получаем экземпляр БД
+	storageDB, err := db.InitDB(ctx, &cfg.DB, appLogger)
+	if err != nil {
+		appLogger.Error("ошибка подключения к БД", "error", err)
+		return
+	}
+	defer func() { _ = db.CloseDB(storageDB) }()
 
 	// запускаем сервер
 	err = server.Run(ctx, &cfg.Server, appLogger)
