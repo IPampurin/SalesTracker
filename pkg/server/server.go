@@ -28,17 +28,16 @@ func Run(ctx context.Context, cfgServer *configuration.ConfServer, log logger.Lo
 		// используем переданный логгер для записи информации о запросе
 		log.LogRequest(c.Request.Context(), c.Request.Method, c.Request.URL.Path, c.Writer.Status(), duration)
 	})
-	/*
-		// регистрируем эндпоинты
-		engine.POST("/events", api.CreateEvent(svc, log))                // создание мероприятия
-		engine.GET("/events", api.GetAllEvents(svc, log))                // получение всех мероприятий
-		engine.POST("/events/:id/book", api.ReserveSeat(svc, log))       // бронирование места
-		engine.POST("/events/:id/confirm", api.ConfirmReserve(svc, log)) // оплата брони (если мероприятие требует этого)
-		engine.GET("/events/:id", api.GetEventByID(svc, log))            // получение информации о мероприятии и свободных местах
-		engine.POST("/register", api.RegisterUser(svc, log))             // регистрация пользователя
-		engine.POST("/login", api.LoginUser(svc, log))                   // вход юзера
-		engine.GET("/events/:id/book", api.GetUserBooking(svc, log))     // есть ли бронь у юзера
-	*/
+
+	// регистрируем эндпоинты
+	engine.GET("/api/items", api.GetItemsPeriodSorted(svc, log))                     // получить список записей за период с сортировкой
+	engine.POST("/api/items", api.CreateItem(svc, log))                              // создать запись
+	engine.PUT("/api/items/{id}", api.UpdateItem(svc, log))                          // обновить запись
+	engine.DELETE("/api/items/{id}", api.DelItem(svc, log))                          // удалить запись
+	engine.GET("/api/analytics", api.GetAnalytic(svc, log))                          // общая аналитика за период
+	engine.GET("/api/analytics/by-category", api.GetAnalyticGroupCategory(svc, log)) // аналитика с группировкой по категориям
+	engine.GET("/api/export/csv", api.ExportCSVFile(svc, log))                       // экспорт записей за период в формате CSV
+
 	// раздаём статические файлы из папки ./web
 	engine.Static("/static", "./web")
 
