@@ -10,6 +10,7 @@ import (
 	"github.com/IPampurin/SalesTracker/pkg/configuration"
 	"github.com/IPampurin/SalesTracker/pkg/db"
 	"github.com/IPampurin/SalesTracker/pkg/server"
+	"github.com/IPampurin/SalesTracker/pkg/service"
 	"github.com/wb-go/wbf/logger"
 )
 
@@ -49,8 +50,11 @@ func main() {
 	}
 	defer func() { _ = db.CloseDB(storageDB) }()
 
+	// получаем экземпляр слоя бизнес-логики
+	service := service.InitService(ctx, storageDB)
+
 	// запускаем сервер
-	err = server.Run(ctx, &cfg.Server, appLogger)
+	err = server.Run(ctx, &cfg.Server, service, appLogger)
 	if err != nil {
 		appLogger.Error("Ошибка сервера", "error", err)
 		cancel()

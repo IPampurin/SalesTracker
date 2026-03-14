@@ -6,13 +6,15 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/IPampurin/SalesTracker/pkg/api"
 	"github.com/IPampurin/SalesTracker/pkg/configuration"
+	"github.com/IPampurin/SalesTracker/pkg/service"
 	"github.com/gin-gonic/gin"
 	"github.com/wb-go/wbf/ginext"
 	"github.com/wb-go/wbf/logger"
 )
 
-func Run(ctx context.Context, cfgServer *configuration.ConfServer, log logger.Logger) error {
+func Run(ctx context.Context, cfgServer *configuration.ConfServer, svc *service.Service, log logger.Logger) error {
 
 	// создаём движок Gin через обёртку ginext
 	engine := ginext.New(cfgServer.GinMode)
@@ -32,8 +34,8 @@ func Run(ctx context.Context, cfgServer *configuration.ConfServer, log logger.Lo
 	// регистрируем эндпоинты
 	engine.GET("/api/items", api.GetItemsPeriodSorted(svc, log))                     // получить список записей за период с сортировкой
 	engine.POST("/api/items", api.CreateItem(svc, log))                              // создать запись
-	engine.PUT("/api/items/{id}", api.UpdateItem(svc, log))                          // обновить запись
-	engine.DELETE("/api/items/{id}", api.DelItem(svc, log))                          // удалить запись
+	engine.PUT("/api/items/:id", api.UpdateItem(svc, log))                           // обновить запись
+	engine.DELETE("/api/items/:id", api.DelItem(svc, log))                           // удалить запись
 	engine.GET("/api/analytics", api.GetAnalytic(svc, log))                          // общая аналитика за период
 	engine.GET("/api/analytics/by-category", api.GetAnalyticGroupCategory(svc, log)) // аналитика с группировкой по категориям
 	engine.GET("/api/export/csv", api.ExportCSVFile(svc, log))                       // экспорт записей за период в формате CSV
