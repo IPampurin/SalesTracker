@@ -40,8 +40,6 @@ func main() {
 		log.Fatalf("Ошибка создания логгера: %v", err)
 	}
 
-	// defer func() { _ = appLogger.(*logger.ZapAdapter) }()
-
 	// получаем экземпляр БД
 	storageDB, err := db.InitDB(ctx, &cfg.DB, appLogger)
 	if err != nil {
