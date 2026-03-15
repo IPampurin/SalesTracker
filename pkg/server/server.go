@@ -32,13 +32,13 @@ func Run(ctx context.Context, cfgServer *configuration.ConfServer, svc *service.
 	})
 
 	// регистрируем эндпоинты
-	engine.GET("/api/items", api.GetItemsPeriodSorted(svc, log))                     // получить список записей за период с сортировкой
-	engine.POST("/api/items", api.CreateItem(svc, log))                              // создать запись
-	engine.PUT("/api/items/:id", api.UpdateItem(svc, log))                           // обновить запись
-	engine.DELETE("/api/items/:id", api.DelItem(svc, log))                           // удалить запись
-	engine.GET("/api/analytics", api.GetAnalytic(svc, log))                          // общая аналитика за период
-	engine.GET("/api/analytics/by-category", api.GetAnalyticGroupCategory(svc, log)) // аналитика с группировкой по категориям
-	engine.GET("/api/export/csv", api.ExportCSVFile(svc, log))                       // экспорт записей за период в формате CSV
+	engine.GET("/items", api.GetItemsPeriodSorted(svc, log))                     // получить список записей за период с сортировкой
+	engine.POST("/items", api.CreateItem(svc, log))                              // создать запись
+	engine.PUT("/items/:id", api.UpdateItem(svc, log))                           // обновить запись
+	engine.DELETE("/items/:id", api.DelItem(svc, log))                           // удалить запись
+	engine.GET("/analytics", api.GetAnalytic(svc, log))                          // общая аналитика за период
+	engine.GET("/analytics/by-category", api.GetAnalyticGroupCategory(svc, log)) // аналитика с группировкой по категориям
+	engine.GET("/export/csv", api.ExportCSVFile(svc, log))                       // экспорт записей за период в формате CSV
 
 	// раздаём статические файлы из папки ./web
 	engine.Static("/static", "./web")

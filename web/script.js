@@ -1,6 +1,6 @@
 (function() {
     // --- Конфигурация API ---
-    const API_BASE = '/api'; 
+    const API_BASE = ''; 
 
     // --- Элементы DOM ---
     const form = document.getElementById('itemForm');
